@@ -625,6 +625,11 @@ class MultiLayerEagleWorkerV2(BaseSpecWorker):
             draft_input: EagleDraftInput = model_worker_batch.spec_info
             verify_input: EagleVerifyInput = self.draft_worker.draft(model_worker_batch)
             assert verify_input.is_verify_input()
+
+            # todo seq_lens_sum & seq_lens_cpu assignment not here
+            verify_input.seq_lens_sum = model_worker_batch.seq_lens_sum
+            verify_input.seq_lens_cpu = model_worker_batch.seq_lens_cpu
+
             model_worker_batch.spec_info = verify_input
             batch_output = self.verify(model_worker_batch)
             self.draft_worker._draft_extend_for_decode(model_worker_batch, batch_output)
